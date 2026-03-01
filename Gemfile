@@ -1,5 +1,13 @@
 source "https://rubygems.org"
 
+# user control
+gem "devise"
+
+# format code
+group :development do
+  gem "rubocop", require: false
+end
+
 # Bundle edge Rails instead: gem "rails", github: "rails/rails", branch: "main"
 gem "rails", "~> 8.1.2"
 # Use postgresql as the database for Active Record
