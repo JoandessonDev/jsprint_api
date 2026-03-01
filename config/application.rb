@@ -11,6 +11,6 @@ module App
 
     # Middleware necessário para Devise
     config.middleware.use ActionDispatch::Cookies
-    config.middleware.use ActionDispatch::Session::CookieStore, key: '__my_app_sessionn'
+    config.middleware.use ActionDispatch::Session::CookieStore, key: "__my_app_sessionn"
   end
 end
