@@ -1,17 +1,21 @@
 class UsersController < ApplicationController
+  before_action :authenticate_user!
   before_action :set_user, only: [ :update, :destroy ]
   before_action :require_admin, only: [ :destroy ]
 
-
   def index
-    @users = User.all
+    @users = User.select(:id, :name, :email, :cpf, :role_id)
     render json: @users
   end
 
   def update
-    perimited_params = current_user.role.name == "admin" ? admin_user_params : user_params
+    unless admin? || current_user.id == @user.id
+      render json: { error: "Acesso negado" }, status: :forbidden and return
+    end
 
-    if @user.update(perimited_params)
+    permitted_params = admin? ? admin_user_params : user_params
+
+    if @user.update(permitted_params)
       render json: @user
     else
       render json: { errors: @user.errors.full_messages }, status: :unprocessable_entity
@@ -24,12 +28,17 @@ class UsersController < ApplicationController
     else
       render json: { errors: @user.errors.full_messages }, status: :unprocessable_entity
     end
-end
+  end
 
   private
 
+  def admin?
+    current_user.role.name == "admin"
+  end
+
   def set_user
-    @user = User.find(params[:id])
+    @user = User.find_by(id: params[:id])
+    render json: { error: "Usuário não encontrado" }, status: :not_found unless @user
   end
 
   def user_params
@@ -37,12 +46,13 @@ end
   end
 
   def admin_user_params
-  params.require(:user).permit(:name, :email, :cpf, :role_id, :password, :password_confirmation)
-end
+    params.require(:user).permit(:name, :email, :cpf, :role_id, :password, :password_confirmation)
+  end
 
   def require_admin
-    unless current_user.role.name == "admin"
+    unless admin?
       render json: { error: "Acesso negado" }, status: :forbidden
+      nil
     end
   end
 end
