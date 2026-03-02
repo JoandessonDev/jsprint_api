@@ -8,6 +8,9 @@ group :development do
   gem "rubocop", require: false
 end
 
+gem "devise-jwt"
+gem "jsonapi-serializer"
+
 # Bundle edge Rails instead: gem "rails", github: "rails/rails", branch: "main"
 gem "rails", "~> 8.1.2"
 # Use postgresql as the database for Active Record
@@ -16,6 +19,7 @@ gem "pg", "~> 1.1"
 gem "puma", ">= 5.0"
 # Build JSON APIs with ease [https://github.com/rails/jbuilder]
 # gem "jbuilder"
+gem "dotenv-rails", groups: [ :development, :test ]
 
 # Use Active Model has_secure_password [https://guides.rubyonrails.org/active_model_basics.html#securepassword]
 # gem "bcrypt", "~> 3.1.7"
