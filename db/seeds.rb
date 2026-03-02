@@ -1,9 +1,18 @@
-# This file should ensure the existence of records required to run the application in every environment (production,
-# development, test). The code here should be idempotent so that it can be executed at any point in every environment.
-# The data can then be loaded with the bin/rails db:seed command (or created alongside the database with db:setup).
-#
-# Example:
-#
-#   ["Action", "Comedy", "Drama", "Horror"].each do |genre_name|
-#     MovieGenre.find_or_create_by!(name: genre_name)
-#   end
+# Create default roles
+roles = ["admin", "manager", "developer", "viewer"]
+
+roles.each do |role|
+  Role.find_or_create_by!(name: role)
+end
+
+# Find admin role
+admin_role = Role.find_by(name: "admin")
+
+# Create default admin user
+User.find_or_create_by!(email: "joandesson.dev@gmail.com") do |user|
+  user.name = "Joandesson Santos"
+  user.cpf = "04350843213"
+  user.password = "JSprint2026&"
+  user.password_confirmation = "JSprint2026&"
+  user.role = admin_role
+end
