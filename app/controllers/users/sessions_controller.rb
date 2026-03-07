@@ -4,7 +4,8 @@ class Users::SessionsController < Devise::SessionsController
 
   private
 
-  def respond_with(resource, _opts = {})
+def respond_with(resource, _opts = {})
+  if resource.present? && request.env["warden-jwt_auth.token"].present?
     render json: {
       message: "Login realizado com sucesso",
       user: {
@@ -14,7 +15,12 @@ class Users::SessionsController < Devise::SessionsController
       },
       token: request.env["warden-jwt_auth.token"]
     }, status: :ok
+  else
+    render json: {
+      error: "Usuário não autenticado"
+    }, status: :unauthorized
   end
+end
 
   def respond_to_on_destroy(resource_or_scope = nil)
     render json: { message: "Logout realizado com sucesso" }, status: :ok

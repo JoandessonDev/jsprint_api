@@ -1,0 +1,2 @@
+class WorkspaceRole < ApplicationRecord
+end

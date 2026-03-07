@@ -16,3 +16,11 @@ User.find_or_create_by!(email: "joandesson.dev@gmail.com") do |user|
   user.password_confirmation = "JSprint2026&"
   user.role = admin_role
 end
+
+
+# Create roles for workspace
+WorkspaceRole.create!([
+  { name: "owner" },
+  { name: "admin" },
+  { name: "member" }
+])
