@@ -4,9 +4,10 @@ Rails.application.routes.draw do
     registrations: "users/registrations"
   }
 
-  # Rota para listar usuários
+  # USERS
   resources :users, only: [ :index, :update, :destroy ]
   get "up" => "rails/health#show", as: :rails_health_check
 
-  # root "posts#index"
+  # WORKSPACES
+  resources :workspaces
 end

@@ -10,9 +10,18 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[8.1].define(version: 2026_03_02_221231) do
+ActiveRecord::Schema[8.1].define(version: 2026_03_07_193225) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "pg_catalog.plpgsql"
+
+  create_table "projects", force: :cascade do |t|
+    t.datetime "created_at", null: false
+    t.string "description"
+    t.string "name"
+    t.datetime "updated_at", null: false
+    t.bigint "workspace_id", null: false
+    t.index ["workspace_id"], name: "index_projects_on_workspace_id"
+  end
 
   create_table "roles", force: :cascade do |t|
     t.datetime "created_at", null: false
@@ -39,5 +48,33 @@ ActiveRecord::Schema[8.1].define(version: 2026_03_02_221231) do
     t.index ["role_id"], name: "index_users_on_role_id"
   end
 
+  create_table "workspace_members", force: :cascade do |t|
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.bigint "user_id", null: false
+    t.bigint "workspace_id", null: false
+    t.bigint "workspace_role_id", null: false
+    t.index ["user_id"], name: "index_workspace_members_on_user_id"
+    t.index ["workspace_id"], name: "index_workspace_members_on_workspace_id"
+    t.index ["workspace_role_id"], name: "index_workspace_members_on_workspace_role_id"
+  end
+
+  create_table "workspace_roles", force: :cascade do |t|
+    t.datetime "created_at", null: false
+    t.string "name"
+    t.datetime "updated_at", null: false
+  end
+
+  create_table "workspaces", force: :cascade do |t|
+    t.datetime "created_at", null: false
+    t.string "description"
+    t.string "name"
+    t.datetime "updated_at", null: false
+  end
+
+  add_foreign_key "projects", "workspaces"
   add_foreign_key "users", "roles"
+  add_foreign_key "workspace_members", "users"
+  add_foreign_key "workspace_members", "workspace_roles"
+  add_foreign_key "workspace_members", "workspaces"
 end
