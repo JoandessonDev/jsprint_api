@@ -13,4 +13,7 @@ Rails.application.routes.draw do
 
   # PROJECTS
   resources :projects
+
+  # COLUMNS
+  resources :columns, only: [ :create, :update, :destroy ]
 end

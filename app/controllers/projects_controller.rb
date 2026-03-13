@@ -8,6 +8,14 @@ class ProjectsController < ApplicationController
         render json: @projects, only: [:id, :name, :description]
     end
 
+    def show
+    project = Project.includes(:columns).find(params[:id])
+
+    render json: project,
+            include: { columns: { only: [:id, :name, :position] } },
+            only: [:id, :name, :description]
+    end
+
     def create
         @project = Project.new(project_params)
         if @project.save
@@ -44,8 +52,8 @@ class ProjectsController < ApplicationController
 
     def create_default_columns(project)
         default_column_names = ["To Do", "In Progress", "In Analysis", "Done"]
-        default_column_names.each do |name|
-            Column.create!(name: name, project: project)
+        default_column_names.each_with_index do |name, index|
+            Column.create!(name: name, project: project, position: index)
         end
     end
 end
