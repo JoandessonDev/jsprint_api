@@ -10,4 +10,7 @@ Rails.application.routes.draw do
 
   # WORKSPACES
   resources :workspaces
+
+  # PROJECTS
+  resources :projects
 end
