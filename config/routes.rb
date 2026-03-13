@@ -10,4 +10,10 @@ Rails.application.routes.draw do
 
   # WORKSPACES
   resources :workspaces
+
+  # PROJECTS
+  resources :projects
+
+  # COLUMNS
+  resources :columns, only: [ :create, :update, :destroy ]
 end
